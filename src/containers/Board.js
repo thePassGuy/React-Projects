@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import Lane from '../components/Lane/Lane';
+import React, { Component } from "react";
+import styled from "styled-components";
+import Lane from "../components/Lane/Lane";
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -14,12 +14,39 @@ const BoardWrapper = styled.div`
 `;
 
 class Board extends Component {
+  constructor() {
+    super();
+    this.state = {
+      data: [],
+      loading: true,
+      error: ""
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const tickets = await fetch(".../../assets/data.json");
+      const ticketsJson = await tickets.json();
+
+      if (ticketsJson) {
+        this.setState({
+          data: ticketsJson,
+          loading: false
+        });
+      }
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error.message
+      });
+    }
+  }
   render() {
     const lanes = [
-      { id: 1, title: 'To Do' },
-      { id: 2, title: 'In Progress' },
-      { id: 3, title: 'Review' },
-      { id: 4, title: 'Done' },
+      { id: 1, title: "To Do" },
+      { id: 2, title: "In Progress" },
+      { id: 3, title: "Review" },
+      { id: 4, title: "Done" }
     ];
 
     return (
